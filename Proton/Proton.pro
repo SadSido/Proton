@@ -20,3 +20,6 @@ HEADERS  += window.h \
     view.h
 
 FORMS    += window.ui
+
+RESOURCES += \
+    proton.qrc

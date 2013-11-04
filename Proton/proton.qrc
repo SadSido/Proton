@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/proton">
+        <file>backgr/bg_dotted.png</file>
+    </qresource>
+</RCC>
