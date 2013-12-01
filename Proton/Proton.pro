@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         window.cpp \
     view.cpp \
-    items.cpp
+    items.cpp \
+    game.cpp
 
 HEADERS  += window.h \
     view.h \
-    items.h
+    items.h \
+    game.h
 
 FORMS    += window.ui
 
