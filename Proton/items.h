@@ -8,13 +8,33 @@ namespace Proton
 
 //**************************************************************************************************
 
-class CardItem : public QGraphicsPixmapItem
+class BaseItem : public QGraphicsPixmapItem
 {
-    typedef QGraphicsPixmapItem Base;
+public:
+    explicit BaseItem();
+    virtual ~BaseItem();
+};
 
+//**************************************************************************************************
+
+class CardItem : public BaseItem
+{
 public:
     explicit CardItem();
     virtual ~CardItem();
+
+private:
+    QPixmap m_face;
+    QPixmap m_cover;
+};
+
+// **************************************************************************************************
+
+class DeckItem : public BaseItem
+{
+public:
+    explicit DeckItem();
+    virtual ~DeckItem();
 };
 
 // **************************************************************************************************
