@@ -2,6 +2,7 @@
 #define ITEMS_H
 
 #include <QGraphicsPixmapItem>
+#include "view.h"
 
 namespace Proton
 {
@@ -11,8 +12,11 @@ namespace Proton
 class BaseItem : public QGraphicsPixmapItem
 {
 public:
-    explicit BaseItem();
+    explicit BaseItem(Scene * scene);
     virtual ~BaseItem();
+
+protected:
+    Scene * m_scene;
 };
 
 //**************************************************************************************************
@@ -20,7 +24,7 @@ public:
 class CardItem : public BaseItem
 {
 public:
-    explicit CardItem();
+    explicit CardItem(Scene * scene);
     virtual ~CardItem();
 
 private:
@@ -33,7 +37,7 @@ private:
 class DeckItem : public BaseItem
 {
 public:
-    explicit DeckItem();
+    explicit DeckItem(Scene * scene);
     virtual ~DeckItem();
 };
 

@@ -5,7 +5,8 @@ namespace Proton
 
 //**************************************************************************************************
 
-BaseItem::BaseItem()
+BaseItem::BaseItem(Scene *scene)
+: m_scene(scene)
 {
 }
 
@@ -15,7 +16,8 @@ BaseItem::~BaseItem()
 
 // **************************************************************************************************
 
-CardItem::CardItem()
+CardItem::CardItem(Scene * scene)
+: BaseItem(scene)
 {
 }
 
@@ -25,7 +27,8 @@ CardItem::~CardItem()
 
 //**************************************************************************************************
 
-DeckItem::DeckItem()
+DeckItem::DeckItem(Scene * scene)
+: BaseItem(scene)
 {
 }
 
