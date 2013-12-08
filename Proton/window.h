@@ -2,6 +2,7 @@
 #define WINDOW_H
 
 #include <QMainWindow>
+#include "view.h"
 
 // **************************************************************************************************
 
@@ -22,8 +23,15 @@ public:
     explicit Window(QWidget *parent = 0);
     virtual ~Window();
 
+public slots:
+    void menu_OpenPrototype();
+
 private:
     Ui::Window *ui;
+    Scene * m_scene;
+
+private:
+    void connectMenuSignals();
 };
 
 // **************************************************************************************************
