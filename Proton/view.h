@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QWheelEvent>
+#include <QScopedPointer>
 
 namespace Proton
 {
@@ -14,6 +15,8 @@ class Scene : public QGraphicsScene
 {
     Q_OBJECT
 
+public:
+    typedef QScopedPointer<Scene> Ref;
     typedef QGraphicsScene Base;
 
 public:

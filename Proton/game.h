@@ -1,6 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <QScopedPointer>
+#include <QFile>
+
 namespace Proton
 {
 
@@ -12,8 +15,10 @@ namespace Proton
 class GameDesc
 {
 public:
-    GameDesc();
-    ~GameDesc();
+    typedef QScopedPointer<GameDesc> Ref;
+
+    explicit GameDesc();
+    explicit GameDesc(QFile &file);
 };
 
 // **************************************************************************************************

@@ -17,9 +17,12 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     // additional initialization:
     connectMenuSignals();
 
+    // create default prototype:
+    m_game.reset(new GameDesc());
+
     // finally, create scene:
-    m_scene = new Scene(this);
-    ui->view->setScene(m_scene);
+    m_scene.reset(new Scene());
+    ui->view->setScene(m_scene.data());
 }
 
 Window::~Window()
@@ -32,6 +35,9 @@ Window::~Window()
 void Window::menu_OpenPrototype()
 {
     QString filename = QFileDialog::getOpenFileName(this);
+    QFile file(filename);
+
+    m_game.reset(new GameDesc(file));
 }
 
 // helpers:

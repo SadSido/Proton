@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "view.h"
+#include "game.h"
 
 // **************************************************************************************************
 
@@ -28,7 +29,8 @@ public slots:
 
 private:
     Ui::Window *ui;
-    Scene * m_scene;
+    Scene::Ref m_scene;
+    GameDesc::Ref m_game;
 
 private:
     void connectMenuSignals();

@@ -8,7 +8,7 @@ namespace Proton
 GameDesc::GameDesc()
 {}
 
-GameDesc::~GameDesc()
+GameDesc::GameDesc(QFile &file)
 {}
 
 // **************************************************************************************************
