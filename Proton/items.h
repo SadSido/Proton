@@ -2,6 +2,7 @@
 #define ITEMS_H
 
 #include <QGraphicsPixmapItem>
+#include <QVector>
 #include "view.h"
 
 namespace Proton
@@ -39,6 +40,12 @@ class DeckItem : public BaseItem
 public:
     explicit DeckItem(Scene * scene);
     virtual ~DeckItem();
+
+public:
+    void dealCard();
+
+private:
+    QVector<CardItem*> m_cards;
 };
 
 // **************************************************************************************************
