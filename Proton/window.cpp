@@ -35,9 +35,13 @@ Window::~Window()
 void Window::menu_OpenPrototype()
 {
     QString filename = QFileDialog::getOpenFileName(this);
-    QFile file(filename);
 
-    m_game.reset(new GameDesc(file));
+    QFile file(filename);
+    if (file.open(QFile::ReadOnly | QFile::Text))
+    {
+        QString content(file.readAll());
+        m_game.reset(new GameDesc(content));
+    }
 }
 
 // helpers:

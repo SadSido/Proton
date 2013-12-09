@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         window.cpp \
     view.cpp \
     items.cpp \
-    game.cpp
+    game.cpp \
+    utils.cpp
 
 HEADERS  += window.h \
     view.h \
     items.h \
-    game.h
+    game.h \
+    utils.h
 
 FORMS    += window.ui
 

@@ -18,7 +18,12 @@ public:
     typedef QScopedPointer<GameDesc> Ref;
 
     explicit GameDesc();
-    explicit GameDesc(QFile &file);
+    explicit GameDesc(const QString &content);
+
+private:
+    void parseDeck  (QString::const_iterator &it);
+    void parseDice  (QString::const_iterator &it);
+    void parseToken (QString::const_iterator &it);
 };
 
 // **************************************************************************************************
