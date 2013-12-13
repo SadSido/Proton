@@ -1,11 +1,28 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <QScopedPointer>
-#include <QFile>
+#include <QSharedPointer>
+#include <QMap>
+#include <QtCore>
 
 namespace Proton
 {
+
+//**************************************************************************************************
+
+// general description of single game's item.
+
+class ItemDesc
+{
+public:
+    typedef QSharedPointer<ItemDesc> Ref;
+
+    QString set(const QString &key, const QString &val);
+    QString get(const QString &key);
+
+private:
+    QMap<QString, QString> m_data;
+};
 
 //**************************************************************************************************
 
@@ -15,10 +32,13 @@ namespace Proton
 class GameDesc
 {
 public:
-    typedef QScopedPointer<GameDesc> Ref;
+    typedef QSharedPointer<GameDesc> Ref;
 
     explicit GameDesc();
     explicit GameDesc(const QString &content);
+
+private:
+    QMap<QString, ItemDesc::Ref> m_decks;
 
 private:
     void parseDeck  (QString::const_iterator &it);
