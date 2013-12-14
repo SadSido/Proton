@@ -1,6 +1,27 @@
 #include "game.h"
 #include "utils.h"
 #include <assert.h>
+#include <QDebug>
+
+namespace
+{
+//**************************************************************************************************
+
+void throw_if(const QString &name, const QString &desc, bool condition)
+{ if (condition) { throw Proton::ParseError(name, desc); } }
+
+//**************************************************************************************************
+
+const char * const err_bad_token   = "unrecognized token";
+const char * const err_no_brace    = "missing opening brace";
+const char * const err_empty_name  = "name is empty";
+const char * const err_dupe_name   = "name is used already";
+const char * const err_empty_param = "parameter name is empty";
+const char * const err_empty_value = "parameter value is empty";
+const char * const err_no_colon    = "missing colon after parameter";
+
+//**************************************************************************************************
+}
 
 namespace Proton
 {
@@ -24,6 +45,7 @@ GameDesc::GameDesc(const QString &content)
     while (!it->isNull())
     {
         QString token = Proton::parseToken(it);
+        qDebug() << "GameDesc :: parse token" << token;
 
         if (token == "//")
         { Proton::parseLine(it); }
@@ -36,6 +58,9 @@ GameDesc::GameDesc(const QString &content)
 
         else if (token == "dice")
         { this->parseDice(it); }
+
+        else
+        { throw_if(token, err_bad_token, !token.isEmpty()); }
     }
 }
 
@@ -43,14 +68,14 @@ GameDesc::GameDesc(const QString &content)
 
 void GameDesc::parseDeck(QString::const_iterator &it)
 {
-    QString name  = Proton::parseQuotes(it);
+    QString name  = Proton::parseSingle(it);
     QString brace = Proton::parseToken(it);
 
-    if (name.isEmpty())
-    { return; /* error : no name stated */ }
+    qDebug() << "GameDesc :: deck" << name;
 
-    if (m_decks.find(name) != m_decks.end())
-    { return; /* error : deck name redefinition */ }
+    throw_if(name, err_no_brace,   brace != "{");
+    throw_if(name, err_empty_name, name.isEmpty());
+    throw_if(name, err_dupe_name,  hasDeck(name));
 
     ItemDesc::Ref item (new ItemDesc());
     m_decks[name] = item;
@@ -61,10 +86,15 @@ void GameDesc::parseDeck(QString::const_iterator &it)
         if (key == "}") { break; }
 
         QString col = Proton::parseToken(it);
-        QString val = Proton::parseToken(it);
+        QString val = Proton::parseSingle(it);
 
-        if (!key.isEmpty() && col == ":" && !val.isEmpty())
-        { item->set(key, val); }
+        qDebug() << "GameDesc :: entry" << key << val;
+
+        throw_if(key, err_empty_param, key.isEmpty());
+        throw_if(key, err_empty_value, val.isEmpty());
+        throw_if(key, err_no_colon,    col != ":");
+
+        item->set(key, val);
     }
 }
 

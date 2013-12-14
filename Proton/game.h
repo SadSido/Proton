@@ -10,6 +10,17 @@ namespace Proton
 
 //**************************************************************************************************
 
+struct ParseError
+{
+    explicit ParseError(const QString &newName, const QString &newDesc)
+    : name(newName), desc(newDesc) {}
+
+    QString name;
+    QString desc;
+};
+
+//**************************************************************************************************
+
 // general description of single game's item.
 
 class ItemDesc
@@ -36,6 +47,9 @@ public:
 
     explicit GameDesc();
     explicit GameDesc(const QString &content);
+
+    inline bool hasDeck(const QString &name) const
+    { return m_decks.find(name) != m_decks.end(); }
 
 private:
     QMap<QString, ItemDesc::Ref> m_decks;

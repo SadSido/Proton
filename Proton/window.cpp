@@ -1,6 +1,7 @@
 #include "window.h"
 #include "ui_window.h"
 #include <QFileDialog>
+#include <QMessageBox>
 
 namespace Proton
 {
@@ -40,7 +41,19 @@ void Window::menu_OpenPrototype()
     if (file.open(QFile::ReadOnly | QFile::Text))
     {
         QString content(file.readAll());
-        m_game.reset(new GameDesc(content));
+
+        try
+        {
+            auto game = new GameDesc(content);
+            m_game.reset(game);
+        }
+        catch (ParseError &pe)
+        {
+            const QString caption = "Failed to read file";
+            const QString message = QString("%1 : %2").arg(pe.name, pe.desc);
+
+            QMessageBox::warning(this, caption, message);
+        }
     }
 }
 
