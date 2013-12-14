@@ -7,7 +7,7 @@ namespace
 
 const QString spaces = " \n\r\t";
 const QString digits = "0123456789";
-const QString quotes = "'\"";
+const QString quotes = "\"";
 const QString newlns = "\r\n";
 
 void skipWhile(QString::const_iterator &it, const QString &pattern)
@@ -34,6 +34,12 @@ namespace Proton
 {
 
 // **************************************************************************************************
+
+QString parseSingle(QString::const_iterator &it)
+{
+    skipWhile(it, spaces);
+    return (*it == '"') ? parseQuotes(it) : parseToken(it);
+}
 
 QString parseToken(QString::const_iterator &it)
 {
