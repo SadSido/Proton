@@ -29,8 +29,8 @@ public:
     typedef QSharedPointer<ItemDesc> Ref;
 
     QString set(const QString &key, const QString &val);
-    QString get(const QString &key);    
-    bool    has(const QString &key);
+    QString get(const QString &key) const;
+    bool    has(const QString &key) const;
 
 private:
     QMap<QString, QString> m_data;
@@ -45,19 +45,29 @@ class GameDesc
 {
 public:
     typedef QSharedPointer<GameDesc> Ref;
+    typedef QMap<QString, ItemDesc::Ref> ItemMap;
 
     explicit GameDesc();
     explicit GameDesc(const QString &content);
 
-private:
-    typedef QMap<QString, ItemDesc::Ref> ItemMap;
-    typedef QMap<QString, ItemMap> GameMap;
+    // get the necessary maps:
 
+    inline ItemMap & getDecks()
+    { return m_map["deck"]; }
+
+    inline ItemMap & getDices()
+    { return m_map["dice"]; }
+
+    inline ItemMap & getTokens()
+    { return m_map["token"]; }
+
+private:
+    typedef QMap<QString, ItemMap> GameMap;
     GameMap m_map;
 
 private:
-    void ensureMap (const QString &name);
-    void parseItem (QString::const_iterator &it, ItemMap &into);
+    void ensureMaps ();
+    void parseItem  (QString::const_iterator &it, ItemMap &into);
 };
 
 // **************************************************************************************************

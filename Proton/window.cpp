@@ -44,8 +44,11 @@ void Window::menu_OpenPrototype()
 
         try
         {
-            auto game = new GameDesc(content);
-            m_game.reset(game);
+            // parse new prototype:
+            m_game.reset(new GameDesc(content));
+
+            // on success, update ui:
+            refillListViews();
         }
         catch (ParseError &pe)
         {
@@ -63,6 +66,16 @@ void Window::connectMenuSignals()
 {
     connect(ui->actionOpen_prototype, SIGNAL(triggered()), this, SLOT(menu_OpenPrototype()));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
+}
+
+void Window::refillListViews()
+{
+    ui->deck_list->clear();
+
+    auto decks = m_game->getDecks();
+    auto keys  = decks.keys();
+
+    ui->deck_list->addItems(keys);
 }
 
 // **************************************************************************************************

@@ -34,6 +34,7 @@ private:
 
 private:
     void connectMenuSignals();
+    void refillListViews();
 };
 
 // **************************************************************************************************

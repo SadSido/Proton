@@ -23,12 +23,6 @@ const char * const err_no_colon    = "missing colon after parameter";
 
 //**************************************************************************************************
 
-template <typename KEY, typename VAL>
-bool has_key (const QMap<KEY, VAL> &map, const KEY &key)
-{ return map.find(key) != map.end(); }
-
-//**************************************************************************************************
-
 }
 
 namespace Proton
@@ -42,13 +36,13 @@ QString ItemDesc::set(const QString &key, const QString &val)
     return val;
 }
 
-QString ItemDesc::get(const QString &key)
+QString ItemDesc::get(const QString &key) const
 {
     auto it = m_data.find(key);
     return (it != m_data.end()) ? (*it) : QString();
 }
 
-bool ItemDesc::has(const QString &key)
+bool ItemDesc::has(const QString &key) const
 {
     auto it = m_data.find(key);
     return it != m_data.end();
@@ -57,10 +51,17 @@ bool ItemDesc::has(const QString &key)
 //**************************************************************************************************
 
 GameDesc::GameDesc()
-{}
+{
+    // init empty maps:
+    ensureMaps();
+}
 
 GameDesc::GameDesc(const QString &content)
 {
+    // init empty maps:
+    ensureMaps();
+
+    // parse incoming str:
     auto it = content.begin();
     while (!it->isNull())
     {
@@ -70,8 +71,8 @@ GameDesc::GameDesc(const QString &content)
         if (token == "//")
         { Proton::parseLine(it); }
 
-        else if (token == "deck" || token == "dice" || token == "token")
-        { ensureMap(token); parseItem(it, m_map[token]); }
+        else if (m_map.contains(token))
+        { parseItem(it, m_map[token]); }
 
         else if (!token.isEmpty())
         { throw_if(token, err_bad_token, true); }
@@ -80,10 +81,14 @@ GameDesc::GameDesc(const QString &content)
 
 // parsing helpers:
 
-void GameDesc::ensureMap(const QString &name)
+void GameDesc::ensureMaps()
 {
-    if (m_map.find(name) == m_map.end())
-    { m_map[name] = ItemMap(); }
+    // the following sections are available:
+    static const QString mapNames [] = {"deck", "dice", "token"};
+    static const size_t  mapCount = sizeof(mapNames) / sizeof(mapNames[0]);
+
+    for (size_t no = 0; no < mapCount; ++ no)
+    { m_map[mapNames[no]] = ItemMap(); }
 }
 
 void GameDesc::parseItem(QString::const_iterator &it, ItemMap &into)
@@ -95,7 +100,7 @@ void GameDesc::parseItem(QString::const_iterator &it, ItemMap &into)
 
     throw_if(name, err_no_brace,   brace != "{");
     throw_if(name, err_empty_name, name.isEmpty());
-    throw_if(name, err_dupe_name,  has_key(into, name));
+    throw_if(name, err_dupe_name,  into.contains(name));
 
     ItemDesc::Ref item (new ItemDesc());
     into[name] = item;
