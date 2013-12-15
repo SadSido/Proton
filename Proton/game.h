@@ -29,7 +29,8 @@ public:
     typedef QSharedPointer<ItemDesc> Ref;
 
     QString set(const QString &key, const QString &val);
-    QString get(const QString &key);
+    QString get(const QString &key);    
+    bool    has(const QString &key);
 
 private:
     QMap<QString, QString> m_data;
@@ -48,16 +49,15 @@ public:
     explicit GameDesc();
     explicit GameDesc(const QString &content);
 
-    inline bool hasDeck(const QString &name) const
-    { return m_decks.find(name) != m_decks.end(); }
+private:
+    typedef QMap<QString, ItemDesc::Ref> ItemMap;
+    typedef QMap<QString, ItemMap> GameMap;
+
+    GameMap m_map;
 
 private:
-    QMap<QString, ItemDesc::Ref> m_decks;
-
-private:
-    void parseDeck  (QString::const_iterator &it);
-    void parseDice  (QString::const_iterator &it);
-    void parseToken (QString::const_iterator &it);
+    void ensureMap (const QString &name);
+    void parseItem (QString::const_iterator &it, ItemMap &into);
 };
 
 // **************************************************************************************************
