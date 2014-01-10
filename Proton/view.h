@@ -35,6 +35,10 @@ class View : public QGraphicsView
 public:
     explicit View(QWidget *parent = 0);
     virtual ~View();
+
+    virtual void dragEnterEvent(QDragEnterEvent *event) override;
+    virtual void dragMoveEvent(QDragMoveEvent *event) override;
+    virtual void dropEvent(QDropEvent *event) override;
 };
 
 // **************************************************************************************************
