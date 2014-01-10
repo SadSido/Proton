@@ -20,6 +20,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
 
     // create default prototype:
     m_game.reset(new GameDesc());
+    loadPrototype("D:/Projects/Proton/Sample/sample.proton");
 
     // finally, create scene:
     m_scene.reset(new Scene());
@@ -36,6 +37,14 @@ Window::~Window()
 void Window::menu_OpenPrototype()
 {
     QString filename = QFileDialog::getOpenFileName(this);
+    loadPrototype(filename);
+}
+
+// helpers:
+
+void Window::loadPrototype(const QString &filename)
+{
+    qDebug() << "Window :: load prototype from " << filename;
 
     QFile file(filename);
     if (file.open(QFile::ReadOnly | QFile::Text))
@@ -46,7 +55,6 @@ void Window::menu_OpenPrototype()
         {
             // parse new prototype:
             m_game.reset(new GameDesc(content));
-
             // on success, update ui:
             refillListViews();
         }
@@ -59,8 +67,6 @@ void Window::menu_OpenPrototype()
         }
     }
 }
-
-// helpers:
 
 void Window::connectMenuSignals()
 {

@@ -35,6 +35,8 @@ private:
 private:
     void connectMenuSignals();
     void refillListViews();
+
+    void loadPrototype(const QString &path);
 };
 
 // **************************************************************************************************
