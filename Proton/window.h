@@ -22,6 +22,7 @@ public:
     explicit ListEntry(QWidget *parent, const QString &type, const QString &name);
     virtual ~ListEntry();
 
+    virtual void mousePressEvent(QMouseEvent *event) override;
     virtual void paintEvent(QPaintEvent * event) override;
 
 private:

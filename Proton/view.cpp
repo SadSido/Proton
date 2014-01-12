@@ -33,10 +33,11 @@ View::~View()
 
 void View::dragEnterEvent(QDragEnterEvent *event)
 {
-    qDebug() << "View :: dragEnterEvent " << event->mimeData()->formats();
+    auto formats = event->mimeData()->formats();
+    qDebug() << "View :: dragEnterEvent " << formats;
 
-    auto mime = event->mimeData();
-    (mime->hasText()) ? event->accept() : event->ignore();
+    bool formatOK = qFind(formats, "type-name-pair") != formats.end();
+    (formatOK) ? event->accept() : event->ignore();
 }
 
 void View::dragMoveEvent(QDragMoveEvent *event)
@@ -46,7 +47,12 @@ void View::dragMoveEvent(QDragMoveEvent *event)
 
 void View::dropEvent(QDropEvent *event)
 {
-    qDebug() << "View :: dropEvent " << event->mimeData()->text();
+    QDataStream stream(event->mimeData()->data("type-name-pair"));
+
+    QString type; stream >> type;
+    QString name; stream >> name;
+
+    qDebug() << "View :: dropEvent " << type << name;
     event->accept();
 }
 // **************************************************************************************************

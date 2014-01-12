@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QDrag>
 
 namespace Proton
 {
@@ -18,6 +19,27 @@ ListEntry::~ListEntry()
 {
 }
 
+void ListEntry::mousePressEvent(QMouseEvent *event)
+ {
+    qDebug() << "ListEntry :: mouse pressed for item " << m_name;
+
+     if (event->button() == Qt::LeftButton)
+     {
+         QDrag *drag = new QDrag(this);
+         QMimeData *mimeData = new QMimeData;
+
+         QByteArray data;
+         QDataStream stream(&data, QIODevice::Append);
+
+         stream << m_type;
+         stream << m_name;
+
+         mimeData->setData("type-name-pair", data);
+
+         drag->setMimeData(mimeData);
+         drag->exec();
+     }
+ }
 void ListEntry::paintEvent(QPaintEvent *)
 {
     auto myrect = this->rect();
