@@ -14,6 +14,21 @@ namespace Ui { class Window; }
 namespace Proton
 {
 
+class ListEntry : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ListEntry(QWidget *parent, const QString &type, const QString &name);
+    virtual ~ListEntry();
+
+    virtual void paintEvent(QPaintEvent * event) override;
+
+private:
+    QString m_name;
+    QString m_type;
+};
+
 // **************************************************************************************************
 
 class Window : public QMainWindow

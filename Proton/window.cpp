@@ -2,9 +2,36 @@
 #include "ui_window.h"
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QPushButton>
 
 namespace Proton
 {
+
+// **************************************************************************************************
+
+ListEntry::ListEntry(QWidget *parent, const QString &type, const QString &name)
+: QWidget(parent), m_name(name), m_type(type)
+{
+}
+
+ListEntry::~ListEntry()
+{
+}
+
+void ListEntry::paintEvent(QPaintEvent *)
+{
+    auto myrect = this->rect();
+
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(Qt::darkGreen);
+    painter.drawRect(myrect);
+
+    painter.setPen(Qt::darkGray);
+    painter.drawLine(myrect.topLeft(), myrect.bottomRight());
+
+    painter.drawText(myrect, Qt::TextWordWrap, m_name);
+}
 
 // **************************************************************************************************
 
@@ -81,7 +108,35 @@ void Window::refillListViews()
     auto decks = m_game->getDecks();
     auto keys  = decks.keys();
 
-    ui->deck_list->addItems(keys);
+    foreach (QString key, keys)
+    {
+        QListWidgetItem* item = new QListWidgetItem(ui->deck_list);
+        ui->deck_list->addItem(item);
+
+        auto entry = new ListEntry(ui->deck_list, "deck", key);
+        entry->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
+
+        item->setSizeHint(QSize(ui->deck_list->size().width(), 100));
+
+        ui->deck_list->setItemWidget(item, entry);
+    }
+//    ui->deck_list->addItems(keys);
+
+
+    /*
+    ui->deck_list->addItem("foo");
+
+    QListWidgetItem* item;
+    item = new QListWidgetItem(ui->deck_list);
+    ui->deck_list->addItem(item);
+    QPushButton* button = new QPushButton("hey");
+    button->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    item->setSizeHint(QSize(100, 100));
+    ui->deck_list->setItemWidget(item, button);
+
+    ui->deck_list->addItem("bar");
+    */
 }
 
 // **************************************************************************************************
