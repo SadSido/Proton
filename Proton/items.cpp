@@ -1,4 +1,18 @@
 #include "items.h"
+#include <assert.h>
+
+namespace
+{
+
+//**************************************************************************************************
+
+template <typename ITEMTYPE>
+Proton::BaseItem * createItemByType(Proton::Scene * scene, Proton::GameDesc::Ref game, const QString &type, const QString &name)
+{ return new ITEMTYPE(scene); }
+
+//**************************************************************************************************
+
+}
 
 namespace Proton
 {
@@ -55,5 +69,15 @@ void DeckItem::dealCard()
 
 // **************************************************************************************************
 
+BaseItem * createItem(Scene * scene, GameDesc::Ref game, const QString &type, const QString &name)
+{
+    if (type == tag_deck)
+    { return createItemByType<DeckItem>(scene, game, type, name); }
+
+    assert(false);
+    return NULL;
+}
+
+// **************************************************************************************************
 }
 

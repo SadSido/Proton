@@ -42,6 +42,7 @@ public:
 
 public slots:
     void menu_OpenPrototype();
+    void view_OnItemDropped(const QString &type, const QString &name);
 
 private:
     Ui::Window *ui;
@@ -49,7 +50,7 @@ private:
     GameDesc::Ref m_game;
 
 private:
-    void connectMenuSignals();
+    void connectSignals();
     void refillListViews();
 
     void loadPrototype(const QString &path);

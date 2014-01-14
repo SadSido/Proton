@@ -65,7 +65,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     ui->setupUi(this);
 
     // additional initialization:
-    connectMenuSignals();
+    connectSignals();
 
     // create default prototype:
     m_game.reset(new GameDesc());
@@ -81,12 +81,17 @@ Window::~Window()
     delete ui;
 }
 
-// menu bar handlers:
+// handling of signals:
 
 void Window::menu_OpenPrototype()
 {
     QString filename = QFileDialog::getOpenFileName(this);
     loadPrototype(filename);
+}
+
+void Window::view_OnItemDropped(const QString &type, const QString &name)
+{
+    qDebug() << "Window :: adding item to scene" << type << name;
 }
 
 // helpers:
@@ -117,10 +122,11 @@ void Window::loadPrototype(const QString &filename)
     }
 }
 
-void Window::connectMenuSignals()
+void Window::connectSignals()
 {
     connect(ui->actionOpen_prototype, SIGNAL(triggered()), this, SLOT(menu_OpenPrototype()));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
+    connect(ui->view, SIGNAL(onItemDropped(QString,QString)), this, SLOT(view_OnItemDropped(QString,QString)));
 }
 
 void Window::refillListViews()
@@ -135,7 +141,7 @@ void Window::refillListViews()
         QListWidgetItem* item = new QListWidgetItem(ui->deck_list);
         ui->deck_list->addItem(item);
 
-        auto entry = new ListEntry(ui->deck_list, "deck", key);
+        auto entry = new ListEntry(ui->deck_list, tag_deck, key);
         entry->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
 
@@ -143,22 +149,6 @@ void Window::refillListViews()
 
         ui->deck_list->setItemWidget(item, entry);
     }
-//    ui->deck_list->addItems(keys);
-
-
-    /*
-    ui->deck_list->addItem("foo");
-
-    QListWidgetItem* item;
-    item = new QListWidgetItem(ui->deck_list);
-    ui->deck_list->addItem(item);
-    QPushButton* button = new QPushButton("hey");
-    button->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    item->setSizeHint(QSize(100, 100));
-    ui->deck_list->setItemWidget(item, button);
-
-    ui->deck_list->addItem("bar");
-    */
 }
 
 // **************************************************************************************************

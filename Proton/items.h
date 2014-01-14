@@ -4,6 +4,7 @@
 #include <QGraphicsPixmapItem>
 #include <QVector>
 #include "view.h"
+#include "game.h"
 
 namespace Proton
 {
@@ -47,6 +48,12 @@ public:
 private:
     QVector<CardItem*> m_cards;
 };
+
+// **************************************************************************************************
+
+// factory function to create Graphic item from the prototype description:
+
+BaseItem * createItem(Scene * scene, GameDesc::Ref game, const QString &type, const QString &name);
 
 // **************************************************************************************************
 

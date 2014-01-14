@@ -10,6 +10,12 @@ namespace Proton
 
 //**************************************************************************************************
 
+extern const char * const tag_deck;
+extern const char * const tag_dice;
+extern const char * const tag_token;
+
+//**************************************************************************************************
+
 struct ParseError
 {
     explicit ParseError(const QString &newName, const QString &newDesc)
@@ -52,14 +58,17 @@ public:
 
     // get the necessary maps:
 
+    inline ItemMap & getItems(const QString &type)
+    { return m_map[type]; }
+
     inline ItemMap & getDecks()
-    { return m_map["deck"]; }
+    { return getItems(tag_deck); }
 
     inline ItemMap & getDices()
-    { return m_map["dice"]; }
+    { return getItems(tag_dice); }
 
     inline ItemMap & getTokens()
-    { return m_map["token"]; }
+    { return getItems(tag_token); }
 
 private:
     typedef QMap<QString, ItemMap> GameMap;

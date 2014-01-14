@@ -30,6 +30,12 @@ namespace Proton
 
 //**************************************************************************************************
 
+const char * const tag_deck  = "deck";
+const char * const tag_dice  = "dice";
+const char * const tag_token = "token";
+
+//**************************************************************************************************
+
 QString ItemDesc::set(const QString &key, const QString &val)
 {
     m_data[key] = val;
@@ -84,7 +90,7 @@ GameDesc::GameDesc(const QString &content)
 void GameDesc::ensureMaps()
 {
     // the following sections are available:
-    static const QString mapNames [] = {"deck", "dice", "token"};
+    static const QString mapNames [] = {tag_deck, tag_dice, tag_token};
     static const size_t  mapCount = sizeof(mapNames) / sizeof(mapNames[0]);
 
     for (size_t no = 0; no < mapCount; ++ no)
