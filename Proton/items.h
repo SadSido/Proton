@@ -39,7 +39,7 @@ private:
 class DeckItem : public BaseItem
 {
 public:
-    explicit DeckItem(Scene * scene);
+    explicit DeckItem(Scene * scene, GameDesc::Ref game, const QString &name);
     virtual ~DeckItem();
 
 public:

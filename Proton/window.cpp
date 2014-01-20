@@ -1,5 +1,6 @@
 #include "window.h"
 #include "ui_window.h"
+#include "items.h"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPushButton>
@@ -92,6 +93,11 @@ void Window::menu_OpenPrototype()
 void Window::view_OnItemDropped(const QString &type, const QString &name)
 {
     qDebug() << "Window :: adding item to scene" << type << name;
+
+    if (auto item = createItem(m_scene.data(), m_game, type, name))
+    {
+        m_scene->addItem(item);
+    }
 }
 
 // helpers:

@@ -70,9 +70,16 @@ public:
     inline ItemMap & getTokens()
     { return getItems(tag_token); }
 
+    // additional info:
+
+    QString getPath() const
+    { return m_path; }
+
 private:
     typedef QMap<QString, ItemMap> GameMap;
+
     GameMap m_map;
+    QString m_path;
 
 private:
     void ensureMaps ();
