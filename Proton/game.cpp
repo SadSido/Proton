@@ -12,6 +12,7 @@ void throw_if(const QString &name, const QString &desc, bool condition)
 
 //**************************************************************************************************
 
+const char * const err_bad_file    = "invalid filename";
 const char * const err_bad_token   = "unrecognized token";
 const char * const err_no_brace    = "missing opening brace";
 const char * const err_empty_name  = "name is empty";
@@ -62,13 +63,22 @@ GameDesc::GameDesc()
     ensureMaps();
 }
 
-GameDesc::GameDesc(const QString &content)
+GameDesc::GameDesc(QFile &file)
 {
     // init empty maps:
     ensureMaps();
 
-    // parse incoming str:
+    // open prototype file:
+    QFileInfo finfo(file);
+    m_path = finfo.absolutePath();
+
+    const bool open = file.open(QFile::ReadOnly | QFile::Text);
+    throw_if(finfo.fileName(), err_bad_file, !open);
+
+    const QString content(file.readAll());
     auto it = content.begin();
+
+    // parse incoming str:
     while (!it->isNull())
     {
         QString token = Proton::parseToken(it);

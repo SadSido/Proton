@@ -106,25 +106,21 @@ void Window::loadPrototype(const QString &filename)
 {
     qDebug() << "Window :: load prototype from " << filename;
 
-    QFile file(filename);
-    if (file.open(QFile::ReadOnly | QFile::Text))
+    try
     {
-        QString content(file.readAll());
+        // parse new prototype:
+        QFile file(filename);
+        m_game.reset(new GameDesc(file));
 
-        try
-        {
-            // parse new prototype:
-            m_game.reset(new GameDesc(content));
-            // on success, update ui:
-            refillListViews();
-        }
-        catch (ParseError &pe)
-        {
-            const QString caption = "Failed to read file";
-            const QString message = QString("%1 : %2").arg(pe.name, pe.desc);
+        // on success, update ui:
+        refillListViews();
+    }
+    catch (ParseError &pe)
+    {
+        const QString caption = "Failed to read file";
+        const QString message = QString("%1 : %2").arg(pe.name, pe.desc);
 
-            QMessageBox::warning(this, caption, message);
-        }
+        QMessageBox::warning(this, caption, message);
     }
 }
 

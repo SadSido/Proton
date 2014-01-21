@@ -26,7 +26,7 @@ protected:
 class CardItem : public BaseItem
 {
 public:
-    explicit CardItem(Scene * scene);
+    explicit CardItem(Scene * scene, const QPixmap &face, const QPixmap &cover);
     virtual ~CardItem();
 
 private:

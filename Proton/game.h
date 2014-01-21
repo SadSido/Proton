@@ -54,7 +54,7 @@ public:
     typedef QMap<QString, ItemDesc::Ref> ItemMap;
 
     explicit GameDesc();
-    explicit GameDesc(const QString &content);
+    explicit GameDesc(QFile &file);
 
     // get the necessary maps:
 

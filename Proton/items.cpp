@@ -38,9 +38,10 @@ BaseItem::~BaseItem()
 
 // **************************************************************************************************
 
-CardItem::CardItem(Scene * scene)
-: BaseItem(scene)
+CardItem::CardItem(Scene * scene, const QPixmap &face, const QPixmap &cover)
+: BaseItem(scene), m_face(face), m_cover(cover)
 {
+    this->setPixmap(face);
 }
 
 CardItem::~CardItem()
@@ -52,6 +53,10 @@ CardItem::~CardItem()
 DeckItem::DeckItem(Scene * scene, GameDesc::Ref game, const QString &name)
 : BaseItem(scene)
 {
+    qDebug() << "DeckItem :: constructor" << name;
+
+    // get the descriptor:
+
     auto items = game->getDecks();
     auto item  = items.find(name);
 
@@ -61,15 +66,28 @@ DeckItem::DeckItem(Scene * scene, GameDesc::Ref game, const QString &name)
         const QString subd = (*item)->get("dir");
         const QString covr = (*item)->get("cover");
 
+        qDebug() << "DeckItem :: " << path << subd << covr;
+
+        // base path for stuff:
+
         QDir dir(path); dir.cd(subd);
         auto files = dir.entryList(QStringList(), QDir::Files, QDir::Name);
 
+        // fetch the cover:
+
+        QPixmap cover(dir.absoluteFilePath(covr));
+        this->setPixmap(cover);
+
+        // fetch the cards:
+
         foreach (QString file , files)
         {
-            QPixmap pixFace(dir.absoluteFilePath(file));
-            QPixmap pixCovr(dir.absoluteFilePath(covr));
+            // skip cover file:
+            if (file == covr) { continue; }
 
-            auto cardItem = new CardItem(scene);
+            QPixmap face(dir.absoluteFilePath(file));
+
+            auto cardItem = new CardItem(scene, face, cover);
             m_cards.push_back(cardItem);
         }
 
