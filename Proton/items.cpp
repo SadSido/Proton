@@ -30,6 +30,7 @@ namespace Proton
 BaseItem::BaseItem(Scene *scene)
 : m_scene(scene)
 {
+    this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
 }
 
 BaseItem::~BaseItem()
