@@ -66,8 +66,6 @@ DeckItem::DeckItem(Scene * scene, GameDesc::Ref game, const QString &name)
         const QString subd = (*item)->get("dir");
         const QString covr = (*item)->get("cover");
 
-        qDebug() << "DeckItem :: " << path << subd << covr;
-
         // base path for stuff:
 
         QDir dir(path); dir.cd(subd);
@@ -116,10 +114,42 @@ void DeckItem::dealCard()
 
 // **************************************************************************************************
 
+TokenItem::TokenItem(Scene * scene, GameDesc::Ref game, const QString &name)
+: BaseItem(scene)
+{
+    qDebug() << "TokenItem :: constructor" << name;
+
+    // get the descriptor:
+
+    auto items = game->getTokens();
+    auto item  = items.find(name);
+
+    if (item != items.end())
+    {
+        const QString path = game->getPath();
+        const QString file = (*item)->get("file");
+
+        // fetch the cover:
+
+        QDir dir(path);
+        QPixmap face(dir.absoluteFilePath(file));
+        this->setPixmap(face);
+    }
+}
+
+TokenItem::~TokenItem()
+{
+}
+
+//**************************************************************************************************
+
 BaseItem * createItem(Scene * scene, GameDesc::Ref game, const QString &type, const QString &name)
 {
     if (type == tag_deck)
     { return createItemByType<DeckItem>(scene, game, name); }
+
+    if (type == tag_token)
+    { return createItemByType<TokenItem>(scene, game, name); }
 
     assert(false);
     return NULL;

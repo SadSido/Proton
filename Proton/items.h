@@ -51,6 +51,18 @@ private:
 
 // **************************************************************************************************
 
+class TokenItem : public BaseItem
+{
+public:
+    explicit TokenItem(Scene * scene, GameDesc::Ref game, const QString &name);
+    virtual ~TokenItem();
+
+private:
+    QPixmap m_face;
+};
+
+// **************************************************************************************************
+
 // factory function to create Graphic item from the prototype description:
 
 BaseItem * createItem(Scene * scene, GameDesc::Ref game, const QString &type, const QString &name);

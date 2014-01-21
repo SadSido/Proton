@@ -58,7 +58,7 @@
        <enum>QFrame::Box</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="deck_page">
        <property name="geometry">
@@ -70,7 +70,7 @@
         </rect>
        </property>
        <attribute name="label">
-        <string>Page 1</string>
+        <string>Decks</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="spacing">
@@ -100,7 +100,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="dice_page">
+      <widget class="QWidget" name="token_page">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -110,8 +110,28 @@
         </rect>
        </property>
        <attribute name="label">
-        <string>Page 2</string>
+        <string>Tokens</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QListWidget" name="token_list"/>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

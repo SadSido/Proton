@@ -113,7 +113,8 @@ void Window::loadPrototype(const QString &filename)
         m_game.reset(new GameDesc(file));
 
         // on success, update ui:
-        refillListViews();
+        refillListView(ui->deck_list, tag_deck);
+        refillListView(ui->token_list, tag_token);
     }
     catch (ParseError &pe)
     {
@@ -131,25 +132,23 @@ void Window::connectSignals()
     connect(ui->view, SIGNAL(onItemDropped(QString,QString)), this, SLOT(view_OnItemDropped(QString,QString)));
 }
 
-void Window::refillListViews()
+void Window::refillListView(QListWidget *list, const QString &tag)
 {
-    ui->deck_list->clear();
+    list->clear();
 
-    auto decks = m_game->getDecks();
-    auto keys  = decks.keys();
+    auto items = m_game->getItems(tag);
+    auto keys  = items.keys();
 
     foreach (QString key, keys)
     {
-        QListWidgetItem* item = new QListWidgetItem(ui->deck_list);
-        ui->deck_list->addItem(item);
+        QListWidgetItem* item = new QListWidgetItem(list);
+        list->addItem(item);
 
-        auto entry = new ListEntry(ui->deck_list, tag_deck, key);
+        auto entry = new ListEntry(list, tag, key);
         entry->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-
-        item->setSizeHint(QSize(ui->deck_list->size().width(), 100));
-
-        ui->deck_list->setItemWidget(item, entry);
+        item->setSizeHint(QSize(list->size().width(), 100));
+        list->setItemWidget(item, entry);
     }
 }
 

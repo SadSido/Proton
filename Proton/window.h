@@ -8,6 +8,7 @@
 // **************************************************************************************************
 
 namespace Ui { class Window; }
+class QListWidget;
 
 // **************************************************************************************************
 
@@ -51,7 +52,7 @@ private:
 
 private:
     void connectSignals();
-    void refillListViews();
+    void refillListView(QListWidget *list, const QString &tag);
 
     void loadPrototype(const QString &path);
 };
