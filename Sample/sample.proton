@@ -4,3 +4,5 @@ deck "event deck" { dir : "world deck" cover : "cover.png" }
 token "damage token"   { file : "tokens\damage_token.png" }
 token "product token"  { file : "tokens\product_token.png" }
 token "research token" { file : "tokens\research_token.png" }
+
+dice "basic dice" { dir : "basic dice" }

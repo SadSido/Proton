@@ -113,8 +113,9 @@ void Window::loadPrototype(const QString &filename)
         m_game.reset(new GameDesc(file));
 
         // on success, update ui:
-        refillListView(ui->deck_list, tag_deck);
+        refillListView(ui->deck_list,  tag_deck);
         refillListView(ui->token_list, tag_token);
+        refillListView(ui->dice_list,  tag_dice);
     }
     catch (ParseError &pe)
     {

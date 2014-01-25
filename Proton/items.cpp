@@ -144,6 +144,45 @@ TokenItem::~TokenItem()
 
 //**************************************************************************************************
 
+DiceItem::DiceItem(Scene * scene, GameDesc::Ref game, const QString &name)
+: BaseItem(scene), m_faceNo(0)
+{
+    qDebug() << "DiceItem :: constructor" << name;
+
+    // get the descriptor:
+
+    auto items = game->getDices();
+    auto item  = items.find(name);
+
+    if (item != items.end())
+    {
+        const QString path = game->getPath();
+        const QString subd = (*item)->get("dir");
+
+        // base path for stuff:
+
+        QDir dir(path); dir.cd(subd);
+        auto files = dir.entryList(QStringList(), QDir::Files, QDir::Name);
+
+        // fetch the cards:
+
+        foreach (QString file , files)
+        {
+            m_faces.push_back(QPixmap(dir.absoluteFilePath(file)));
+        }
+
+        // set initial face:
+        if (!m_faces.empty())
+        { this->setPixmap(m_faces[0]); }
+    }
+}
+
+DiceItem::~DiceItem()
+{
+}
+
+//**************************************************************************************************
+
 BaseItem * createItem(Scene * scene, GameDesc::Ref game, const QString &type, const QString &name)
 {
     if (type == tag_deck)
@@ -151,6 +190,9 @@ BaseItem * createItem(Scene * scene, GameDesc::Ref game, const QString &type, co
 
     if (type == tag_token)
     { return createItemByType<TokenItem>(scene, game, name); }
+
+    if (type == tag_dice)
+    { return createItemByType<DiceItem>(scene, game, name); }
 
     assert(false);
     return NULL;
