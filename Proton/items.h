@@ -2,6 +2,7 @@
 #define ITEMS_H
 
 #include <QGraphicsPixmapItem>
+#include <QPropertyAnimation>
 #include <QVector>
 #include "view.h"
 #include "game.h"
@@ -11,7 +12,7 @@ namespace Proton
 
 //**************************************************************************************************
 
-class BaseItem : public QGraphicsPixmapItem
+class BaseItem : public QObject, public QGraphicsPixmapItem
 {
 public:
     explicit BaseItem(Scene * scene);
@@ -25,9 +26,19 @@ protected:
 
 class CardItem : public BaseItem
 {
+    Q_OBJECT
+    Q_PROPERTY(qreal rotation READ rotation WRITE setRotation)
+
 public:
     explicit CardItem(Scene * scene, const QPixmap &face, const QPixmap &cover);
     virtual ~CardItem();
+
+    // available actions:
+    void changeTapState();
+
+private:
+    // interface events:
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event) override;
 
 private:
     QPixmap m_face;
@@ -38,12 +49,17 @@ private:
 
 class DeckItem : public BaseItem
 {
+
 public:
     explicit DeckItem(Scene * scene, GameDesc::Ref game, const QString &name);
     virtual ~DeckItem();
 
-public:
+    // available actions:
     void dealCard();
+
+private:
+    // interface events:
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event) override;
 
 private:
     QVector<CardItem*> m_cards;

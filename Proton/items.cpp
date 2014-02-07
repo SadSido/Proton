@@ -43,11 +43,31 @@ CardItem::CardItem(Scene * scene, const QPixmap &face, const QPixmap &cover)
 : BaseItem(scene), m_face(face), m_cover(cover)
 {
     this->setPixmap(face);
+    this->setTransformOriginPoint(this->boundingRect().center());
 }
 
 CardItem::~CardItem()
 {
 }
+
+void CardItem::changeTapState()
+{
+    qDebug() << "CardItem :: animate tap or untap";
+
+    auto anim = new QPropertyAnimation(this, "rotation");
+
+    const qreal oldangle = rotation();
+    const qreal newangle = 90.0 - oldangle;
+
+    anim->setDuration(150);
+    anim->setStartValue(oldangle);
+    anim->setEndValue(newangle);
+    anim->setEasingCurve(QEasingCurve::InOutBounce);
+    anim->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+void CardItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+{ changeTapState(); }
 
 //**************************************************************************************************
 
@@ -100,6 +120,9 @@ DeckItem::~DeckItem()
     { delete (*it); }
 }
 
+// public slots:
+
+
 void DeckItem::dealCard()
 {
     // the deck was depleted:
@@ -112,6 +135,9 @@ void DeckItem::dealCard()
     // remove from the list of cards:
     m_cards.pop_back();
 }
+
+void DeckItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+{ dealCard(); }
 
 // **************************************************************************************************
 
