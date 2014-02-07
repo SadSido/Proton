@@ -28,12 +28,14 @@ class CardItem : public BaseItem
 {
     Q_OBJECT
     Q_PROPERTY(qreal rotation READ rotation WRITE setRotation)
+    Q_PROPERTY(qreal opacity  READ opacity  WRITE setOpacity)
 
 public:
     explicit CardItem(Scene * scene, const QPixmap &face, const QPixmap &cover);
     virtual ~CardItem();
 
     // available actions:
+    void fadeIn();
     void changeTapState();
 
 private:

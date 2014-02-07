@@ -18,6 +18,18 @@ Proton::BaseItem * createItemByType(Proton::Scene * scene, Proton::GameDesc::Ref
     { return NULL; }
 }
 
+void animateProperty(QObject *target, const QByteArray &name, const QVariant &from, const QVariant &to)
+{
+    static const int s_duration = 150;
+    auto anim = new QPropertyAnimation(target, name);
+
+    anim->setDuration(s_duration);
+    anim->setStartValue(from);
+    anim->setEndValue(to);
+    anim->setEasingCurve(QEasingCurve::InOutBounce);
+    anim->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
 //**************************************************************************************************
 
 }
@@ -50,20 +62,20 @@ CardItem::~CardItem()
 {
 }
 
+void CardItem::fadeIn()
+{
+    const qreal oldalpha = 0.0;
+    const qreal newalpha = 1.0;
+
+    animateProperty(this, "opacity", oldalpha, newalpha);
+}
+
 void CardItem::changeTapState()
 {
-    qDebug() << "CardItem :: animate tap or untap";
-
-    auto anim = new QPropertyAnimation(this, "rotation");
-
     const qreal oldangle = rotation();
     const qreal newangle = 90.0 - oldangle;
 
-    anim->setDuration(150);
-    anim->setStartValue(oldangle);
-    anim->setEndValue(newangle);
-    anim->setEasingCurve(QEasingCurve::InOutBounce);
-    anim->start(QAbstractAnimation::DeleteWhenStopped);
+    animateProperty(this, "rotation", oldangle, newangle);
 }
 
 void CardItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
@@ -134,6 +146,13 @@ void DeckItem::dealCard()
 
     // remove from the list of cards:
     m_cards.pop_back();
+
+    // position properly:
+    auto pos = this->pos();
+    auto off = this->boundingRect().size() / 10;
+
+    topdeck->setPos(pos.x() + off.width(), pos.y() + off.height());
+    topdeck->fadeIn();
 }
 
 void DeckItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
