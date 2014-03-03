@@ -52,6 +52,9 @@
         <height>1000.000000000000000</height>
        </rectf>
       </property>
+      <property name="dragMode">
+       <enum>QGraphicsView::ScrollHandDrag</enum>
+      </property>
      </widget>
     </item>
     <item>
