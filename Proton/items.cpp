@@ -18,7 +18,7 @@ Proton::BaseItem * createItemByType(Proton::Scene * scene, Proton::GameDesc::Ref
     { return NULL; }
 }
 
-void animateProperty(QObject *target, const QByteArray &name, const QVariant &from, const QVariant &to)
+QPropertyAnimation * animateProperty(QObject *target, const QByteArray &name, const QVariant &from, const QVariant &to)
 {
     static const int s_duration = 150;
     auto anim = new QPropertyAnimation(target, name);
@@ -28,6 +28,8 @@ void animateProperty(QObject *target, const QByteArray &name, const QVariant &fr
     anim->setEndValue(to);
     anim->setEasingCurve(QEasingCurve::InOutBounce);
     anim->start(QAbstractAnimation::DeleteWhenStopped);
+
+    return anim;
 }
 
 //**************************************************************************************************
@@ -217,14 +219,41 @@ DiceItem::DiceItem(Scene * scene, GameDesc::Ref game, const QString &name)
         }
 
         // set initial face:
-        if (!m_faces.empty())
-        { this->setPixmap(m_faces[0]); }
+        setRandomFace();
     }
 }
 
 DiceItem::~DiceItem()
 {
 }
+
+// public actions:
+
+void DiceItem::reroll()
+{
+    const qreal oldangle = 0.0f;
+    const qreal newangle = 360.0f;
+
+    auto anim = animateProperty(this, "rotation", oldangle, newangle);
+    connect(anim, SIGNAL(finished()), this, SLOT(setRandomFace()));
+}
+
+// slots:
+
+void DiceItem::setRandomFace()
+{
+    if (!m_faces.empty())
+    {
+        auto faceNo = qrand() % m_faces.size();
+        this->setPixmap(m_faces[faceNo]);
+        this->setTransformOriginPoint(this->boundingRect().center());
+    }
+}
+
+// mouse events:
+
+void DiceItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+{ reroll(); }
 
 //**************************************************************************************************
 

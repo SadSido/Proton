@@ -83,9 +83,23 @@ private:
 
 class DiceItem : public BaseItem
 {
+    Q_OBJECT
+    Q_PROPERTY(qreal rotation READ rotation WRITE setRotation)
+
 public:
     explicit DiceItem(Scene * scene, GameDesc::Ref game, const QString &name);
     virtual ~DiceItem();
+
+    // available actions:
+    void reroll();
+
+public slots:
+    // animation callbacks:
+    void setRandomFace();
+
+private:
+    // interface events:
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event) override;
 
 private:
     int m_faceNo;
