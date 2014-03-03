@@ -39,6 +39,7 @@ public:
     virtual void dragEnterEvent(QDragEnterEvent *event) override;
     virtual void dragMoveEvent(QDragMoveEvent *event) override;
     virtual void dropEvent(QDropEvent *event) override;
+    virtual void wheelEvent(QWheelEvent* event) override;
 
 signals:
     void onItemDropped(const QString &type, const QString &name, const QPointF &pos);
