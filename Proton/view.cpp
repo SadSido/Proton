@@ -52,7 +52,7 @@ void View::dropEvent(QDropEvent *event)
     QString type; stream >> type;
     QString name; stream >> name;
 
-    emit onItemDropped(type, name);
+    emit onItemDropped(type, name, mapToScene(event->pos()));
 
     qDebug() << "View :: dropEvent " << type << name;
     event->accept();

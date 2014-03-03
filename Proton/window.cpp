@@ -90,13 +90,14 @@ void Window::menu_OpenPrototype()
     loadPrototype(filename);
 }
 
-void Window::view_OnItemDropped(const QString &type, const QString &name)
+void Window::view_OnItemDropped(const QString &type, const QString &name, const QPointF &pos)
 {
-    qDebug() << "Window :: adding item to scene" << type << name;
+    qDebug() << "Window :: adding item to scene" << type << name << pos;
 
-    if (auto item = createItem(m_scene.data(), m_game, type, name))
+    if (BaseItem * item = createItem(m_scene.data(), m_game, type, name))
     {
         m_scene->addItem(item);
+        item->setPos(pos - item->boundingRect().center());
     }
 }
 
@@ -130,7 +131,7 @@ void Window::connectSignals()
 {
     connect(ui->actionOpen_prototype, SIGNAL(triggered()), this, SLOT(menu_OpenPrototype()));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
-    connect(ui->view, SIGNAL(onItemDropped(QString,QString)), this, SLOT(view_OnItemDropped(QString,QString)));
+    connect(ui->view, SIGNAL(onItemDropped(QString,QString,QPointF)), this, SLOT(view_OnItemDropped(QString,QString,QPointF)));
 }
 
 void Window::refillListView(QListWidget *list, const QString &tag)

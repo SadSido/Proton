@@ -41,7 +41,7 @@ public:
     virtual void dropEvent(QDropEvent *event) override;
 
 signals:
-    void onItemDropped(const QString &type, const QString &name);
+    void onItemDropped(const QString &type, const QString &name, const QPointF &pos);
 };
 
 // **************************************************************************************************

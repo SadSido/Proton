@@ -43,7 +43,7 @@ public:
 
 public slots:
     void menu_OpenPrototype();
-    void view_OnItemDropped(const QString &type, const QString &name);
+    void view_OnItemDropped(const QString &type, const QString &name, const QPointF &pos);
 
 private:
     Ui::Window *ui;
