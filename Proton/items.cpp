@@ -80,7 +80,7 @@ void CardItem::changeTapState()
     animateProperty(this, "rotation", oldangle, newangle);
 }
 
-void CardItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+void CardItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)
 { changeTapState(); }
 
 //**************************************************************************************************
@@ -157,7 +157,7 @@ void DeckItem::dealCard()
     topdeck->fadeIn();
 }
 
-void DeckItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+void DeckItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)
 { dealCard(); }
 
 // **************************************************************************************************
@@ -252,7 +252,7 @@ void DiceItem::setRandomFace()
 
 // mouse events:
 
-void DiceItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+void DiceItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)
 { reroll(); }
 
 //**************************************************************************************************
